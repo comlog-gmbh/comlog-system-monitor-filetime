@@ -1,6 +1,6 @@
 {
   "name": "comlog-system-monitor-filetime",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Installation via\r ```sh\r $ npm install -s comlog-system-monitor-filetime\r ```",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "COMLOG GmbH <bernhard.duenow@comlog.org> (http://www.comlog.org/)",
   "license": "MIT",
   "dependencies": {
-    "comlog-event-handler": "^1.0.0"
+    "comlog-event-handler": ">=1.0.0"
   },
   "devDependencies": {},
   "repository": {
