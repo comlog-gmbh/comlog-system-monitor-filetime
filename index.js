@@ -12,6 +12,8 @@ function ComlogFileTimeWatcher(options) {
 	this.timeout = 30000; // 30 sekunden
 	this.debug = false;
 
+	this.logger = console;
+
 	// Private funktionen
 	var _running = false, _timer = null;
 
@@ -21,24 +23,24 @@ function ComlogFileTimeWatcher(options) {
 			_running = true;
 
 			var p = path.normalize((typeof _self.path == 'function') ? _self.path() : _self.path);
-			if (_self.debug) console.info('Check '+p+' ...');
+			if (_self.debug) _self.logger.info('Check '+p+' ...');
 
 			fs.stat(p, function(err, stat) {
 				if (err !== null) {
-					if (_self.debug) console.error(err.stack || err);
+					if (_self.debug) _self.logger.error(err.stack || err);
 					_self.trigger('error', [new Error("FileTime stat error for "+p+" \n"+err.message)]);
 					if (_self.satus === true) _self.trigger('down');
 					_self.satus = false;
 				} else {
 					// Zeit abgelaufen
 					if (stat.mtime < (new Date()) - _self.timeout) {
-						if (_self.debug) console.info("FileTime file timeout "+p+" "+stat.mtime);
+						if (_self.debug) _self.logger.info("FileTime file timeout "+p+" "+stat.mtime);
 						if (_self.satus === true) _self.trigger('down');
 						_self.satus = false;
 					}
 					// In der Zeit
 					else {
-						if (_self.debug) console.info("FileTime ok "+p+" "+stat.mtime);
+						if (_self.debug) _self.logger.info("FileTime ok "+p+" "+stat.mtime);
 						if (_self.satus === false) _self.trigger('up');
 						_self.satus = true;
 					}
@@ -52,7 +54,7 @@ function ComlogFileTimeWatcher(options) {
 
 			_self.satus = false;
 			_running = false;
-			if (_self.debug) console.error(e.stack || e);
+			if (_self.debug) _self.logger.error(e.stack || e);
 			_timer = setTimeout(_watch, _self.interval);
 		}
 	}
